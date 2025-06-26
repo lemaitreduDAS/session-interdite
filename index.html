@@ -1,0 +1,227 @@
+<!DOCTYPE html><html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Session Interdite</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        height: 100vh;
+        background: #000;
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+      }
+      #container {
+        text-align: center;
+        max-width: 800px;
+        padding: 1.5rem;
+        backdrop-filter: blur(8px);
+        background: rgba(0, 0, 0, 0.55);
+        border-radius: 1rem;
+        box-shadow: 0 0 20px rgba(255, 0, 80, 0.4);
+      }
+      h1 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+      }
+      #challenge {
+        font-size: 1.5rem;
+        line-height: 1.4;
+        margin: 1.5rem 0;
+        min-height: 4rem;
+      }
+      button {
+        font-size: 1.25rem;
+        padding: 0.75rem 2rem;
+        border: none;
+        border-radius: 999px;
+        cursor: pointer;
+        background: linear-gradient(135deg, #ff0066, #ff4d4d);
+        color: #fff;
+        transition: transform 0.15s ease-in-out;
+      }
+      button:hover {
+        transform: scale(1.06);
+      }
+      #bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-position: center;
+        background-size: cover;
+        z-index: -1;
+        transition: background-image 0.6s ease-out;
+      }
+      #voiceToggle {
+        margin-top: 1rem;
+        font-size: 0.9rem;
+        color: #bbb;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="bg"></div>
+    <div id="container">
+      <h1>Session Interdite</h1>
+      <div id="challenge">Prêt·e ? Appuie sur « Lancer » !</div>
+      <button id="launchBtn">Lancer</button>
+      <div id="voiceToggle">🔈 Voix sexy : <span id="voiceStatus">on</span></div>
+    </div><script>
+  /* -------------------- DATA -------------------- */
+  const challenges = [
+    /* Niveau 1 – Éveil */
+    {
+      text: "Prends un shot, puis fixe ton/ta partenaire en silence pendant 20 sec.",
+      level: 1,
+      img: "https://images.unsplash.com/photo-1570813099152-f7f602a4a0e9?auto=format&fit=crop&w=1200&q=80",
+    },
+    {
+      text: "Tire doucement ses cheveux et souris-lui malicieusement.",
+      level: 1,
+      img: "https://images.unsplash.com/photo-1589156283954-661c310f5f7b?auto=format&fit=crop&w=1200&q=80",
+    },
+    {
+      text: "Masse-lui la nuque et les épaules pendant 60 secondes – pas plus.",
+      level: 1,
+      img: "https://images.unsplash.com/photo-1607968565042-237cc4f661bb?auto=format&fit=crop&w=1200&q=80",
+    },
+    {
+      text: "Chuchote-lui un fantasme dans l’oreille, lentement.",
+      level: 1,
+      img: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=1200&q=80",
+    },
+    {
+      text: "Effleure sa hanche du bout des doigts pendant 30 sec, sans aller plus loin.",
+      level: 1,
+      img: "https://images.unsplash.com/photo-1530629013299-6cb00a2f73a0?auto=format&fit=crop&w=1200&q=80",
+    },
+    /* Niveau 2 – Excitation */
+    {
+      text: "Frotte ton entrejambe contre le sien, sans pénétration. 60 sec.",
+      level: 2,
+      img: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=1200&q=80",
+    },
+    {
+      text: "Doigts dans sa bouche ; regarde-le/la fixement. 20 sec.",
+      level: 2,
+      img: "https://images.unsplash.com/photo-1515268066244-d7e177c42230?auto=format&fit=crop&w=1200&q=80",
+    },
+    {
+      text: "Assieds-toi sur lui/elle ; mouvement lent, pas de sexe pénétrant. 1 min.",
+      level: 2,
+      img: "https://images.unsplash.com/photo-1534951996589-60936c580297?auto=format&fit=crop&w=1200&q=80",
+    },
+    {
+      text: "Pose ta main sur son sexe (au-dessus du tissu). 30 sec de pression.",
+      level: 2,
+      img: "https://images.unsplash.com/photo-1480497490787-505ec0766892?auto=format&fit=crop&w=1200&q=80",
+    },
+    {
+      text: "Mur contre dos – frotte-toi à lui/elle, vêtements à moitié retirés. 1 min.",
+      level: 2,
+      img: "https://images.unsplash.com/photo-1473929734325-69a8440c34b9?auto=format&fit=crop&w=1200&q=80",
+    },
+    /* Niveau 3 – Pénétration */
+    {
+      text: "Levrette intense. 2 minutes. Laisse parler tes mains.",
+      level: 3,
+      img: "https://images.unsplash.com/photo-1520974695093-6c2ade485b08?auto=format&fit=crop&w=1200&q=80",
+    },
+    {
+      text: "Missionnaire lent, yeux dans les yeux. 3 minutes. Pas de parole.",
+      level: 3,
+      img: "https://images.unsplash.com/photo-1527181152855-fc03fc7949c8?auto=format&fit=crop&w=1200&q=80",
+    },
+    {
+      text: "Cowgirl lente. 2 minutes. Contrôle total.",
+      level: 3,
+      img: "https://images.unsplash.com/photo-1502920917128-1aa500764ce7?auto=format&fit=crop&w=1200&q=80",
+    },
+    {
+      text: "Debout, pénétration contre le mur. 90 sec. Arrête juste avant de jouir.",
+      level: 3,
+      img: "https://images.unsplash.com/photo-1543490791-1b774d573662?auto=format&fit=crop&w=1200&q=80",
+    },
+    {
+      text: "Cuillère tendre : mouvements lents, câlins. Jusqu’à l’orgasme ou 4 min.",
+      level: 3,
+      img: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=1200&q=80",
+    },
+  ];
+
+  /* --------------- LOGIC --------------- */
+  let currentLevel = 1;
+  let voiceEnabled = true;
+  const synth = window.speechSynthesis;
+
+  const levelColors = {
+    1: "rgba(255, 0, 102, 0.4)",
+    2: "rgba(255, 77, 77, 0.45)",
+    3: "rgba(255, 120, 0, 0.5)",
+  };
+
+  function getNextChallenge() {
+    // Filter challenges at or above the current level
+    const available = challenges.filter((c) => c.level === currentLevel);
+    const choice = available[Math.floor(Math.random() * available.length)];
+    // Progress level if we have served at least 3 challenges per level
+    levelCounts[currentLevel]++;
+    if (levelCounts[currentLevel] >= 3 && currentLevel < 3) currentLevel++;
+    return choice;
+  }
+
+  const levelCounts = { 1: 0, 2: 0, 3: 0 };
+
+  /* --------------- UI --------------- */
+  const launchBtn = document.getElementById("launchBtn");
+  const challengeDiv = document.getElementById("challenge");
+  const bgDiv = document.getElementById("bg");
+  const voiceToggle = document.getElementById("voiceToggle");
+  const voiceStatus = document.getElementById("voiceStatus");
+
+  launchBtn.addEventListener("click", () => {
+    const chal = getNextChallenge();
+    challengeDiv.textContent = chal.text;
+    bgDiv.style.backgroundImage = `url('${chal.img}')`;
+    document.body.style.boxShadow = `inset 0 0 80px ${levelColors[chal.level]}`;
+    if (voiceEnabled) speak(chal.text);
+  });
+
+  voiceToggle.addEventListener("click", () => {
+    voiceEnabled = !voiceEnabled;
+    voiceStatus.textContent = voiceEnabled ? "on" : "off";
+    voiceToggle.style.color = voiceEnabled ? "#bbb" : "#666";
+  });
+
+  function speak(text) {
+    if (!synth) return;
+    synth.cancel();
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = "fr-FR";
+    utter.pitch = 0.8;
+    utter.rate = 0.9;
+    utter.volume = 1;
+    // Choose a likely feminine voice
+    const voices = synth.getVoices().filter((v) => v.lang.startsWith("fr"));
+    if (voices.length) utter.voice = voices.find((v) => /femme|female|Sophie|Helene/i.test(v.name)) || voices[0];
+    synth.speak(utter);
+  }
+
+  // Load initial background
+  bgDiv.style.backgroundImage = "url('https://images.unsplash.com/photo-1520974695093-6c2ade485b08?auto=format&fit=crop&w=1200&q=80')";
+</script>
+
+  </body>
+</html>
