@@ -34,7 +34,7 @@
       border-radius: 12px;
       color: white;
       cursor: pointer;
-      margin-bottom: 2rem;
+      margin: 0.5rem;
     }
     button:hover {
       background: #ff3399;
@@ -42,7 +42,7 @@
     #defi {
       max-width: 90%;
       font-size: 1.4rem;
-      margin: 0 auto;
+      margin: 1rem auto;
       padding: 0 1rem;
     }
     #bg {
@@ -57,57 +57,70 @@
       z-index: -1;
       opacity: 0.3;
     }
+    #timer {
+      font-size: 1.2rem;
+      margin-top: 0.5rem;
+    }
   </style>
 </head>
 <body>
   <div id="bg"></div>
   <h1>🔥 Session Interdite 🔥</h1>
+  <div>
+    <button onclick="filtre('all')">🎲 Aléatoire</button>
+    <button onclick="filtre('boire')">🍷 Boire</button>
+    <button onclick="filtre('sexe')">💋 Sexe</button>
+    <button onclick="filtre('sm')">⛓️ SM</button>
+    <button onclick="filtre('extrême')">🔥 Extrême</button>
+  </div>
   <button onclick="lancerDefi()">Lancer un défi</button>
-  <div id="defi">Appuie pour commencer</div>  <script>
-    const defis = [
-      "Je bois 1 gorgée(s) et je le/la regarde droit dans les yeux.",
-      "Je bois 2 gorgée(s) et je le/la regarde droit dans les yeux.",
-      "Je bois 3 gorgée(s) et je le/la regarde droit dans les yeux.",
-      "Je lui murmure une envie inavouée à l’oreille.",
-      "Je mime un baiser intense sans toucher.",
-      "Je dois danser sensuellement devant lui/elle.",
-      "Je lui fais un massage d’une minute ou je bois 3 gorgées.",
-      "Je lui chuchote une envie sexy que j’ai en tête.",
-      "Je me mets à califourchon sur lui/elle (habillé.e) pendant 20 sec.",
-      "Je lui embrasse une zone interdite (sous les vêtements) ou bois 5 gorgées.",
-      "Je dois gémir doucement à son oreille.",
-      "Je mime une levrette pendant 15 sec.",
-      "Je dois retirer un vêtement lentement et le lui tendre.",
-      "Je me laisse attacher les poignets pendant 1 tour.",
-      "Je lui donne une petite fessée ou je bois 4 gorgées.",
-      "Je serre sa gorge doucement 3 secondes (avec son accord).",
-      "Je lui donne un ordre sexy.",
-      "Je reste les yeux bandés pendant 2 défis.",
-      "Je commence une pénétration réelle ou je bois 6 gorgées.",
-      "Je me laisse entièrement contrôler pendant 2 minutes.",
-      "Je dois sucer / lécher pendant 15 secondes.",
-      "Je reste nu(e) pendant 1 tour ou je bois 8 gorgées.",
-      "Je propose un fantasme à faire maintenant ou plus tard."
-      // Ici, continue jusqu'à 600 défis réels selon les niveaux désirés...
+  <div id="defi">Appuie pour commencer</div>
+  <div id="timer"></div>
+  <audio id="ambiance" loop autoplay>
+    <source src="https://cdn.pixabay.com/download/audio/2022/08/17/audio_42091c2aa2.mp3?filename=sexy-groove-113787.mp3" type="audio/mp3">
+  </audio>  <script>
+    const fullList = [
+      { text: "Je bois 2 gorgée(s) et je le/la regarde droit dans les yeux.", type: "boire" },
+      { text: "Je lui murmure une envie inavouée à l’oreille.", type: "sexe" },
+      { text: "Je mime un baiser intense sans le toucher.", type: "sexe" },
+      { text: "Je lui fais un massage sexy de 1 minute.", type: "sexe" },
+      { text: "Je danse lentement en me frottant à lui/elle.", type: "sexe" },
+      { text: "Je chuchote une envie coquine à son oreille.", type: "sexe" },
+      { text: "Je me mets à califourchon sur lui/elle (habillé.e) pendant 20 sec.", type: "sexe", chrono: 20 },
+      { text: "Je lui embrasse une zone interdite (sous les vêtements) ou bois 5 gorgées.", type: "sexe boire" },
+      { text: "Je dois gémir doucement à son oreille pendant 10 secondes.", type: "sexe", chrono: 10 },
+      { text: "Je mime une levrette ou un cunni pendant 15 sec.", type: "sexe", chrono: 15 },
+      { text: "Je retire un vêtement lentement et le lui donne.", type: "sexe" },
+      { text: "Je me laisse attacher les poignets pendant 1 tour.", type: "sm" },
+      { text: "Je lui donne une petite fessée ou je bois 4 gorgées.", type: "sm boire" },
+      { text: "Je serre doucement sa gorge 3 secondes (avec accord).", type: "sm", chrono: 3 },
+      { text: "Je lui donne un ordre sexy à exécuter immédiatement.", type: "sm" },
+      { text: "Je reste yeux bandés pendant 2 défis.", type: "sm" },
+      { text: "Je commence une pénétration réelle ou je bois 6 gorgées.", type: "extrême boire" },
+      { text: "Je me laisse contrôler entièrement pendant 2 minutes.", type: "extrême", chrono: 120 },
+      { text: "Je fais une fellation ou un cunnilingus 15 secondes.", type: "extrême", chrono: 15 },
+      { text: "Je reste nu(e) pendant 1 tour ou je bois 8 gorgées.", type: "extrême boire" },
+      { text: "Je propose un fantasme à faire ici et maintenant.", type: "extrême" }
     ];
 
-    const fonds = [
-      'https://images.unsplash.com/photo-1600180758890-6c3a6f17f8ff',
-      'https://images.unsplash.com/photo-1589156283954-661c310f5f7b',
-      'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c',
-      'https://images.unsplash.com/photo-1530629013299-6cb00a2f73a0',
-    ];
+    let defis = [...fullList];
+
+    function filtre(type) {
+      if (type === 'all') defis = [...fullList];
+      else defis = fullList.filter(d => d.type.includes(type));
+    }
 
     function lancerDefi() {
-      const defi = defis[Math.floor(Math.random() * defis.length)];
-      document.getElementById('defi').textContent = defi;
-      document.getElementById('bg').style.backgroundImage = `url('${fonds[Math.floor(Math.random() * fonds.length)]}')`;
+      const d = defis[Math.floor(Math.random() * defis.length)];
+      document.getElementById('defi').textContent = d.text;
+      document.getElementById('bg').style.backgroundImage = `url('https://source.unsplash.com/1600x900/?sensual,${Math.random()}')`;
+      document.getElementById('timer').textContent = d.chrono ? `⏱️ ${d.chrono} secondes` : '';
 
       if (window.speechSynthesis) {
-        const utter = new SpeechSynthesisUtterance(defi);
+        const utter = new SpeechSynthesisUtterance(d.text);
         utter.lang = 'fr-FR';
-        utter.pitch = 1;
-        utter.rate = 0.95;
+        utter.pitch = 1.2;
+        utter.rate = 0.94;
         utter.volume = 1;
         speechSynthesis.cancel();
         speechSynthesis.speak(utter);
