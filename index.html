@@ -1,83 +1,117 @@
 <!DOCTYPE html><html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Session Interdite - Pack 200</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background: #000;
-        color: #fff;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 100vh;
-        text-align: center;
-      }
-      #challenge {
-        margin: 20px;
-        font-size: 1.5rem;
-        max-width: 90%;
-      }
-      button {
-        padding: 10px 20px;
-        font-size: 1rem;
-        background: #ff0040;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-      }
-      #bg {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background-size: cover;
-        background-position: center;
-        z-index: -1;
-        filter: blur(6px);
-        opacity: 0.4;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="bg"></div>
-    <h1>Session Interdite</h1>
-    <div id="challenge">Prêt·e pour un nouveau défi ?</div>
-    <button onclick="showChallenge()">Lancer</button><script>
-  const challenges = [
-    { text: "Bois une gorgée et regarde ton/ta partenaire sans parler pendant 30 sec.", img: "https://source.unsplash.com/featured/?intimate" },
-    { text: "Frotte ton entrejambe contre lui/elle pendant 1 min, habillé.", img: "https://source.unsplash.com/featured/?touch" },
-    { text: "Fume une taffe si t’es high, puis embrasse-le/la comme un animal.", img: "https://source.unsplash.com/featured/?smoke" },
-    { text: "Fessée lente : donne/lui en 5, puis fais une pause tendresse.", img: "https://source.unsplash.com/featured/?spanking" },
-    { text: "Tu préfères : sucer son doigt ou lui masser les fesses 1 min ?", img: "https://source.unsplash.com/featured/?choice" },
-    { text: "Léche-lui le ventre pendant 20 sec. Puis bois 2 gorgées.", img: "https://source.unsplash.com/featured/?lick" },
-    { text: "Doigts dans sa bouche. Garde-les là 10 sec. Intense.", img: "https://source.unsplash.com/featured/?mouth" },
-    { text: "Attache ses mains avec un t-shirt. Puis embrasse son cou lentement.", img: "https://source.unsplash.com/featured/?tie" },
-    { text: "Fais un strip lent de 2 min. L’autre regarde, pas touche.", img: "https://source.unsplash.com/featured/?striptease" },
-    { text: "Tu le/la chevauches. Juste frottement. 60 sec. Sans son.", img: "https://source.unsplash.com/featured/?grind" },
-    // ... Ajoute jusqu'à 200 défis en suivant cette même structure
-  ];
-
-  function showChallenge() {
-    const rand = Math.floor(Math.random() * challenges.length);
-    const c = challenges[rand];
-    document.getElementById("challenge").innerText = c.text;
-    document.getElementById("bg").style.backgroundImage = `url('${c.img}')`;
-    if (window.speechSynthesis) {
-      const utter = new SpeechSynthesisUtterance(c.text);
-      utter.lang = 'fr-FR';
-      utter.pitch = 0.8;
-      utter.rate = 0.95;
-      window.speechSynthesis.speak(utter);
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Session Interdite – Mode JE</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: radial-gradient(#111, #000);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
     }
-  }
-</script>
+    h1 {
+      margin-bottom: 1rem;
+      font-size: 2.5rem;
+      animation: glow 2s infinite;
+    }
+    @keyframes glow {
+      0%, 100% { text-shadow: 0 0 10px #e60073; }
+      50% { text-shadow: 0 0 20px #ff66a3; }
+    }
+    button {
+      padding: 1rem 2rem;
+      font-size: 1.2rem;
+      background: #ff0066;
+      border: none;
+      border-radius: 12px;
+      color: white;
+      cursor: pointer;
+      margin-bottom: 2rem;
+    }
+    button:hover {
+      background: #ff3399;
+    }
+    #defi {
+      max-width: 90%;
+      font-size: 1.4rem;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+    #bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-size: cover;
+      background-position: center;
+      filter: blur(8px);
+      z-index: -1;
+      opacity: 0.3;
+    }
+  </style>
+</head>
+<body>
+  <div id="bg"></div>
+  <h1>🔥 Session Interdite 🔥</h1>
+  <button onclick="lancerDefi()">Lancer un défi</button>
+  <div id="defi">Appuie pour commencer</div>  <script>
+    const defis = [
+      "Je bois 1 gorgée(s) et je le/la regarde droit dans les yeux.",
+      "Je bois 2 gorgée(s) et je le/la regarde droit dans les yeux.",
+      "Je bois 3 gorgée(s) et je le/la regarde droit dans les yeux.",
+      "Je lui murmure une envie inavouée à l’oreille.",
+      "Je mime un baiser intense sans toucher.",
+      "Je dois danser sensuellement devant lui/elle.",
+      "Je lui fais un massage d’une minute ou je bois 3 gorgées.",
+      "Je lui chuchote une envie sexy que j’ai en tête.",
+      "Je me mets à califourchon sur lui/elle (habillé.e) pendant 20 sec.",
+      "Je lui embrasse une zone interdite (sous les vêtements) ou bois 5 gorgées.",
+      "Je dois gémir doucement à son oreille.",
+      "Je mime une levrette pendant 15 sec.",
+      "Je dois retirer un vêtement lentement et le lui tendre.",
+      "Je me laisse attacher les poignets pendant 1 tour.",
+      "Je lui donne une petite fessée ou je bois 4 gorgées.",
+      "Je serre sa gorge doucement 3 secondes (avec son accord).",
+      "Je lui donne un ordre sexy.",
+      "Je reste les yeux bandés pendant 2 défis.",
+      "Je commence une pénétration réelle ou je bois 6 gorgées.",
+      "Je me laisse entièrement contrôler pendant 2 minutes.",
+      "Je dois sucer / lécher pendant 15 secondes.",
+      "Je reste nu(e) pendant 1 tour ou je bois 8 gorgées.",
+      "Je propose un fantasme à faire maintenant ou plus tard."
+      // Ici, continue jusqu'à 600 défis réels selon les niveaux désirés...
+    ];
 
-  </body>
+    const fonds = [
+      'https://images.unsplash.com/photo-1600180758890-6c3a6f17f8ff',
+      'https://images.unsplash.com/photo-1589156283954-661c310f5f7b',
+      'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c',
+      'https://images.unsplash.com/photo-1530629013299-6cb00a2f73a0',
+    ];
+
+    function lancerDefi() {
+      const defi = defis[Math.floor(Math.random() * defis.length)];
+      document.getElementById('defi').textContent = defi;
+      document.getElementById('bg').style.backgroundImage = `url('${fonds[Math.floor(Math.random() * fonds.length)]}')`;
+
+      if (window.speechSynthesis) {
+        const utter = new SpeechSynthesisUtterance(defi);
+        utter.lang = 'fr-FR';
+        utter.pitch = 1;
+        utter.rate = 0.95;
+        utter.volume = 1;
+        speechSynthesis.cancel();
+        speechSynthesis.speak(utter);
+      }
+    }
+  </script></body>
 </html>
